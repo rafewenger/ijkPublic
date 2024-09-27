@@ -32,9 +32,11 @@ ADD_EXECUTABLE(ijkdiffMCtable ijkdiffMCtable.cpp ijkMCtable.cpp
                               ijkMCtable_poly.cpp ijkMCtable_xitIO.cpp)
 ADD_EXECUTABLE(ijkMCtableinfo ijkMCtableinfo.cpp ijkMCtable.cpp 
                               ijkMCtable_poly.cpp ijkMCtable_xitIO.cpp)
-ADD_EXECUTABLE(ijktext2c ijktext2c.cpp)
 ADD_EXECUTABLE(outambigtable outambigtable.cpp 
                              ijkMCtable_poly.cpp ijkMCtable_ambig.cpp)
+
+# CURRENTLY NOT USED
+# ADD_EXECUTABLE(ijktext2c ijktext2c.cpp)
 
 SET(IJK_INSTALL_DIRA "${IJK_DIR}/bin")
 SET(USER_SOFTWARE_DIR "/c/users/$ENV{USERNAME}/Software")
