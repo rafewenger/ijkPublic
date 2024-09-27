@@ -1,0 +1,27 @@
+
+IJK (Isosurface Jeneration Kode) 
+is a set of C++ classes and routines for generating
+isosurface patches in convex polyhedra in arbitrary dimensions.  It
+constructs the isosurface patch as a subset of the convex hull of a
+subset of polyhedra vertices and edge midpoints.  (See ``Isosurface
+construction in any dimension using convex hulls'' by P. Bhaniramka,
+R. Wenger, and R. Crawfis, IEEE Trans. on Vis. and Computer Graphics,
+10 2004, pp. 130-141, and  "Isosurfacing in higher Dimensions" by
+P. Bhaniramka, R. Wenger, and R. Crawfis, Visualization, 2000, Salt
+Lake City Utah: IEEE Computer Society Press.)  
+
+Program genisotable generates isosurface lookup tables for hypercubes
+and simplices in arbitrary (small) dimensions.  Program diffisotable
+outputs the difference of two isosurface tables.
+
+Isotable, genisotable and diffisotable source code is available at
+http://www.cis.ohio-state.edu/graphics/isotable.
+
+Source code includes K. Clarkson's program hull for generating convex hulls.
+
+----------------
+
+Dr. Rephael Wenger, Associate Professor, Ohio State U., 
+Dept. of Comp. Sci., 2015 Neil Ave., Columbus, OH 43210-1277. 
+tel: (614) 292-6253. e-mail: wenger@cse.ohio-state.edu
+
