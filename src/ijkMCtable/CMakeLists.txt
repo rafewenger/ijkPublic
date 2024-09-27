@@ -20,7 +20,7 @@ IF (NOT CMAKE_BUILD_TYPE)
        "Default build type: Release" FORCE)
 ENDIF (NOT CMAKE_BUILD_TYPE)
 
-INCLUDE_DIRECTORIES("${IJK_DIR}/include" "${IJK_DIR}/src/ijkdualtable")
+INCLUDE_DIRECTORIES("${IJK_DIR}/include")
 LINK_LIBRARIES(expat)
 ADD_EXECUTABLE(ijkgenMCtable ijkgenMCtable.cpp ijkgenMCpatch.cpp 
                              ijkMCtable.cpp ijkMCtable_poly.cpp 
