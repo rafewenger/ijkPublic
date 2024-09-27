@@ -1,1 +1,4 @@
 This directory should contain libNrrdIO.a.
+
+Source code for libNrrdIO.a can be found in ${IJK_DIRECTORY}/src/NrrdIO.
+Compile the code (using cmake) and then move libNrrdIO.a to this directory.
