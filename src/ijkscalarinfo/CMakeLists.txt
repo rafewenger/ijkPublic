@@ -33,6 +33,8 @@ ADD_DEFINITIONS(-DTEEM_ZLIB=1)
 # used on windows builds.
 ADD_DEFINITIONS(-DTEEM_BUILD=1)
 
+SET(CMAKE_CXX_FLAGS "-std=c++20")
+
 ADD_EXECUTABLE(ijkscalarinfo ijkscalarinfo.cpp)
 
 SET(IJK_INSTALL_DIRA "${IJK_DIR}/bin")
