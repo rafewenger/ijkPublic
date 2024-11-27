@@ -28,8 +28,6 @@
 #ifndef _IJKVECTOR_GRID_
 #define _IJKVECTOR_GRID_
 
-#define _USE_MATH_DEFINES
-
 #include <algorithm>
 #include <cmath>
 
