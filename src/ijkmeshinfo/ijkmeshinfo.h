@@ -423,11 +423,10 @@ namespace IJKMESHINFO {
       void Init() { is_included = false; is_hidden = false; sum = 0; };
 
     public:
-    DATA_COLUMN<NTYPE,DTYPE>() :
+    DATA_COLUMN() :
       IJKDATATABLE::DATA_COLUMN<NTYPE,DTYPE>() { Init(); };
-      DATA_COLUMN<NTYPE,DTYPE>
-      (const std::string & label, const NTYPE num_rows) :
-        IJKDATATABLE::DATA_COLUMN<NTYPE,DTYPE>(label, num_rows) { Init(); };
+    DATA_COLUMN(const std::string & label, const NTYPE num_rows) :
+      IJKDATATABLE::DATA_COLUMN<NTYPE,DTYPE>(label, num_rows) { Init(); };
 
     // set functions
     void Include();
