@@ -27,10 +27,9 @@
 #ifndef _IJKTRI2D_INFO_
 #define _IJKTRI2D_INFO_
 
-#define _USE_MATH_DEFINES
-
 #include <bitset>
 #include <cmath>
+#include <numbers>
 
 #include "ijk.tpp"
 #include "ijktri2D_encoding.tpp"
@@ -398,7 +397,7 @@ namespace IJK {
     // Only compute min_triangulation_angle for output.
     // You should never need/use angles for mesh processing.
     const COS_TYPE_X min_triangulation_angle =
-      acos(cos_min_triangulation_angle) * (180.0/M_PI);
+      acos(cos_min_triangulation_angle) * (180.0/std::numbers::pi);
 
     out << line_prefix << "min triangulation angle (degrees): "
         << min_triangulation_angle << "\n";

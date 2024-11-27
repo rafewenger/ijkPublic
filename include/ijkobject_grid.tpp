@@ -27,8 +27,6 @@
 #ifndef _IJKOBJECT_GRID_
 #define _IJKOBJECT_GRID_
 
-#define _USE_MATH_DEFINES
-
 #include <algorithm>
 #include <cmath>
 

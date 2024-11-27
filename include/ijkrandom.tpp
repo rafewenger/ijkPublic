@@ -30,10 +30,6 @@
 #ifndef _IJKRANDOM_TPP_
 #define _IJKRANDOM_TPP_
 
-// Set _USE_MATH_DEFINES before including random so that
-//   included math libraries use math defines.
-#define _USE_MATH_DEFINES  
-    
 #include <random>
 
 #include "ijk.tpp"

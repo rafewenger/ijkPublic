@@ -73,9 +73,9 @@ namespace IJKDATATABLE {
     void Init(const NTYPE num_rows) { this->num_rows = num_rows; };
 
   public:
-    DATA_TABLE_BASE<NTYPE>() { Init(0); };
-    DATA_TABLE_BASE<NTYPE>(const NTYPE num_rows) { Init(num_rows); };
-    ~DATA_TABLE_BASE<NTYPE>() { num_rows = 0; };
+    DATA_TABLE_BASE() { Init(0); };
+    DATA_TABLE_BASE(const NTYPE num_rows) { Init(num_rows); };
+    ~DATA_TABLE_BASE() { num_rows = 0; };
 
     NTYPE NumRows() const { return(num_rows); };
   };
@@ -101,9 +101,9 @@ namespace IJKDATATABLE {
     void SetNumRows(const NTYPE num_rows);
 
   public:
-    DATA_COLUMN<NTYPE,DTYPE>() { Init("", 0); };
-    DATA_COLUMN<NTYPE,DTYPE>(const string & label) { Init(label, 0); };
-    DATA_COLUMN<NTYPE,DTYPE>(const string & label, const NTYPE num_rows) 
+    DATA_COLUMN() { Init("", 0); };
+    DATA_COLUMN(const string & label) { Init(label, 0); };
+    DATA_COLUMN(const string & label, const NTYPE num_rows) 
     { Init(label, num_rows); };
 
     // set functions

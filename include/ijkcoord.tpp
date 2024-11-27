@@ -7,7 +7,7 @@
 
 /*
   IJK: Isosurface Jeneration Kode
-  Copyright (C) 2009-2023 Rephael Wenger
+  Copyright (C) 2009-2024 Rephael Wenger
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public License
@@ -27,10 +27,9 @@
 #ifndef _IJKCOORD_
 #define _IJKCOORD_
 
-#define _USE_MATH_DEFINES
-
 #include <algorithm>
 #include <cmath>
+#include <numbers>
 #include <vector>
 
 #include "ijk.tpp"
@@ -1138,7 +1137,7 @@ namespace IJK {
       (dimension, vertex_coord, vertex_list, num_poly_vertices,
        k1, max_small_magnitude, cos_angle, flag_identical);
 
-    angle = std::acos(cos_angle) * 180.0/M_PI;
+    angle = std::acos(cos_angle) * 180.0/std::numbers::pi;
   }
 
 
@@ -1824,8 +1823,9 @@ namespace IJK {
     compute_cos_min_max_polygon_angles
       (dimension, vertex_coord, poly_vert, num_poly_vert,
        max_small_magnitude, cos_min, cos_max, num_angle);
-    min_angle = std::acos(cos_min) * 180.0/M_PI;
-    max_angle = std::acos(cos_max) * 180.0/M_PI;
+    
+    min_angle = std::acos(cos_min) * 180.0/std::numbers::pi;
+    max_angle = std::acos(cos_max) * 180.0/std::numbers::pi;
   }
 
 

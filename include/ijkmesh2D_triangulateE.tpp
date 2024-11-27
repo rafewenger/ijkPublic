@@ -32,6 +32,7 @@
 #include "ijkmesh2D_triangulate.tpp"
 
 #include <algorithm>
+#include <numbers>
 #include <numeric>
 #include <vector>
 
@@ -777,7 +778,7 @@ namespace IJK {
     mesh.PolygonTriangulationInfo(ipoly1).Print(cerr, "    ");
     cerr << "  flag_zero: " << int(flag_zero) << endl;
     cerr << "  cos_min_angle: " << cos_min_angle
-         << "  angle: " << std::acos(cos_min_angle)*180.0/M_PI << endl;    
+         << "  angle: " << std::acos(cos_min_angle)*180.0/std::numbers::pi << endl;    
     cerr << "  poly_tri_result[0]: " << endl;;
     poly_tri_result[0].Print(cerr, "    ");
     cerr << "  poly_tri_result[1]: " << endl;
