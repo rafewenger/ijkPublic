@@ -76,9 +76,9 @@ namespace IJKSCALARINFO {
       void Init() { is_included = false; is_hidden = false; sum = 0; };
 
     public:
-    DATA_COLUMN<NTYPE,DTYPE>() :
+    DATA_COLUMN() :
       IJKDATATABLE::DATA_COLUMN<NTYPE,DTYPE>() { Init(); };
-    DATA_COLUMN<NTYPE,DTYPE>(const string & label) :
+    DATA_COLUMN(const string & label) :
       IJKDATATABLE::DATA_COLUMN<NTYPE,DTYPE>(label) { Init(); };
 
     // set functions
