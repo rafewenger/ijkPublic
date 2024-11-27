@@ -41,8 +41,7 @@ SET(IJKMCUBE_LIB_SRC ijkmcubeIO.cpp ijkmcube.cpp
                      ijkMCtable.cpp ijkMCtable_poly.cpp ijkMCtable_ambig.cpp
                      ijkoctree.cpp ijkMCtable_xitIO.cpp)
 
-# Use c++17.
-SET(CMAKE_CXX_FLAGS "-std=c++17")
+SET(CMAKE_CXX_FLAGS "-std=c++20")
 SET(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 ADD_EXECUTABLE(ijkmcube ijkmcube_main.cpp ${IJKMCUBE_LIB_SRC} )

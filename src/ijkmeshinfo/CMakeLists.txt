@@ -19,7 +19,7 @@ SET(IJKMESHINFO_DIR "src/ijkmeshinfo")
 INCLUDE_DIRECTORIES("${IJK_DIR}/include")
 LINK_DIRECTORIES("${IJK_DIR}/lib")
 
-SET(CMAKE_CXX_FLAGS "-std=c++11")
+SET(CMAKE_CXX_FLAGS "-std=c++20")
 
 ADD_EXECUTABLE(ijkmeshinfo ijkmeshinfo.cpp ijkmeshinfo_compute.cpp
                            ijkmeshinfoIO.cpp)

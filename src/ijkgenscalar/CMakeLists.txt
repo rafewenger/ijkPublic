@@ -36,7 +36,9 @@ ADD_DEFINITIONS(-DTEEM_ZLIB=1)
 # used on windows builds.
 ADD_DEFINITIONS(-DTEEM_BUILD=1)
 
-ADD_EXECUTABLE(ijkgenscalar ijkgenscalar.cxx ijkgenscalarIO.cxx)
+SET(CMAKE_CXX_FLAGS "-std=c++20")
+
+ADD_EXECUTABLE(ijkgenscalar ijkgenscalar.cpp ijkgenscalarIO.cpp)
 
 SET(IJK_INSTALL_DIRA "${IJK_DIR}/bin")
 SET(USER_SOFTWARE_DIR "/c/users/$ENV{USERNAME}/Software")
