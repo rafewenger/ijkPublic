@@ -27,6 +27,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <numbers>
 #include <sstream>
 #include <string>
 
@@ -364,7 +365,7 @@ void IJKMESHINFO::output_polygons_with_small_angles
     { if (!check_boundary_facets(mesh_data, error)) { throw error; } }
 
   int num_out = 0;
-  COORD_TYPE cos_angle_bound = cos(angle_bound*M_PI/180.0);
+  COORD_TYPE cos_angle_bound = cos(angle_bound*std::numbers::pi/180.0);
   COORD_TYPE cos_min_i, cos_max_i;
   int num_angle;
 
@@ -391,7 +392,7 @@ void IJKMESHINFO::output_polygons_with_small_angles
       num_out++;
 
       const int * pvert = mesh_data.VertexList(ipoly);
-      ANGLE_TYPE min_angle_i = std::acos(cos_min_i) * 180.0/M_PI;
+      ANGLE_TYPE min_angle_i = std::acos(cos_min_i) * 180.0/std::numbers::pi;
 
       cout << "  Poly " << ipoly << ": ";
       print_list(cout, pvert, mesh_data.NumPolyVert(ipoly));
@@ -441,7 +442,7 @@ void IJKMESHINFO::output_polygons_with_large_angles
     { if (!check_boundary_facets(mesh_data, error)) { throw error; } }
 
   int num_out = 0;
-  COORD_TYPE cos_angle_bound = cos(angle_bound*M_PI/180.0);
+  COORD_TYPE cos_angle_bound = cos(angle_bound*std::numbers::pi/180.0);
   COORD_TYPE cos_min_i, cos_max_i;
   int num_angle;
 
@@ -468,7 +469,7 @@ void IJKMESHINFO::output_polygons_with_large_angles
       num_out++;
 
       const int * pvert = mesh_data.VertexList(ipoly);
-      ANGLE_TYPE max_angle_i = std::acos(cos_max_i) * 180.0/M_PI;
+      ANGLE_TYPE max_angle_i = std::acos(cos_max_i) * 180.0/std::numbers::pi;
 
       cout << "  Poly " << ipoly << ": ";
       print_list(cout, pvert, mesh_data.NumPolyVert(ipoly));
@@ -629,7 +630,7 @@ void IJKMESHINFO::output_tetrahedra_with_small_facet_angles
     { if (!check_boundary_facets(mesh_data, error)) { throw error; } }
 
   int num_out = 0;
-  COORD_TYPE cos_angle_bound = cos(angle_bound*M_PI/180.0);
+  COORD_TYPE cos_angle_bound = cos(angle_bound*std::numbers::pi/180.0);
   COORD_TYPE cos_min_i, cos_max_i;
   int num_angle;
 
@@ -657,7 +658,7 @@ void IJKMESHINFO::output_tetrahedra_with_small_facet_angles
       num_out++;
 
       const int * pvert = mesh_data.VertexList(ipoly);
-      ANGLE_TYPE min_angle_i = std::acos(cos_min_i) * 180.0/M_PI;
+      ANGLE_TYPE min_angle_i = std::acos(cos_min_i) * 180.0/std::numbers::pi;
 
       cout << "  Tet " << ipoly << ": ";
       print_list(cout, pvert, mesh_data.NumPolyVert(ipoly));
@@ -693,7 +694,7 @@ void IJKMESHINFO::output_tetrahedra_with_large_facet_angles
     { if (!check_boundary_facets(mesh_data, error)) { throw error; } }
 
   int num_out = 0;
-  COORD_TYPE cos_angle_bound = cos(angle_bound*M_PI/180.0);
+  COORD_TYPE cos_angle_bound = cos(angle_bound*std::numbers::pi/180.0);
   COORD_TYPE cos_min_i, cos_max_i;
   int num_angle;
 
@@ -721,7 +722,7 @@ void IJKMESHINFO::output_tetrahedra_with_large_facet_angles
       num_out++;
 
       const int * pvert = mesh_data.VertexList(ipoly);
-      ANGLE_TYPE max_angle_i = std::acos(cos_max_i) * 180.0/M_PI;
+      ANGLE_TYPE max_angle_i = std::acos(cos_max_i) * 180.0/std::numbers::pi;
 
       cout << "  Tet " << ipoly << ": ";
       print_list(cout, pvert, mesh_data.NumPolyVert(ipoly));
@@ -870,7 +871,7 @@ void IJKMESHINFO::output_tetrahedra_with_small_dihedral_angles
     { if (!check_boundary_facets(mesh_data, error)) { throw error; } }
 
   int num_out = 0;
-  COORD_TYPE cos_angle_bound = cos(angle_bound*M_PI/180.0);
+  COORD_TYPE cos_angle_bound = cos(angle_bound*std::numbers::pi/180.0);
   COORD_TYPE cos_min_i, cos_max_i;
   int num_angle;
 
@@ -896,7 +897,7 @@ void IJKMESHINFO::output_tetrahedra_with_small_dihedral_angles
       num_out++;
 
       const int * pvert = mesh_data.VertexList(ipoly);
-      ANGLE_TYPE min_angle_i = std::acos(cos_min_i) * 180.0/M_PI;
+      ANGLE_TYPE min_angle_i = std::acos(cos_min_i) * 180.0/std::numbers::pi;
 
       cout << "  Tet " << ipoly << ": ";
       print_list(cout, pvert, mesh_data.NumPolyVert(ipoly));
@@ -945,7 +946,7 @@ void IJKMESHINFO::output_tetrahedra_with_large_dihedral_angles
     { if (!check_boundary_facets(mesh_data, error)) { throw error; } }
 
   int num_out = 0;
-  COORD_TYPE cos_angle_bound = cos(angle_bound*M_PI/180.0);
+  COORD_TYPE cos_angle_bound = cos(angle_bound*std::numbers::pi/180.0);
   COORD_TYPE cos_min_i, cos_max_i;
   int num_angle;
 
@@ -971,7 +972,7 @@ void IJKMESHINFO::output_tetrahedra_with_large_dihedral_angles
       num_out++;
 
       const int * pvert = mesh_data.VertexList(ipoly);
-      ANGLE_TYPE max_angle_i = std::acos(cos_max_i) * 180.0/M_PI;
+      ANGLE_TYPE max_angle_i = std::acos(cos_max_i) * 180.0/std::numbers::pi;
 
       cout << "  Poly " << ipoly << ": ";
       print_list(cout, pvert, mesh_data.NumPolyVert(ipoly));

@@ -7,7 +7,7 @@
 
 /*
   IJK: Isosurface Jeneration Kode
-  Copyright (C) 2011-2023 Rephael Wenger
+  Copyright (C) 2011-2024 Rephael Wenger
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public License
@@ -29,6 +29,7 @@
 
 #include <cmath>
 #include <cstdlib>
+#include <numbers>
 #include <random>
 
 #include "ijkscalar_grid.tpp"
@@ -428,7 +429,7 @@ namespace IJKSCALARFIELD {
     typedef typename GRID_TYPE::VERTEX_INDEX_TYPE VTYPE;
 
     const DTYPE dimension = grid.Dimension();
-    const double angle_radians = (angle*M_PI)/180.0;
+    const double angle_radians = (angle*std::numbers::pi)/180.0;
     IJK::ARRAY<COORD_TYPE> coord(dimension);
     IJK::ARRAY<double> normalized_axis_dir(dimension);
     double dist0, dist1, x;
@@ -478,7 +479,7 @@ namespace IJKSCALARFIELD {
     typedef typename GRID_TYPE::VERTEX_INDEX_TYPE VTYPE;
 
     const DTYPE dimension = grid.Dimension();
-    const double angle_radians = (angle*M_PI)/180.0;
+    const double angle_radians = (angle*std::numbers::pi)/180.0;
     IJK::ARRAY<COORD_TYPE> coord(dimension);
     IJK::ARRAY<double> normalized_axis_dir(dimension);
     double dist0, dist1, x;
@@ -530,7 +531,7 @@ namespace IJKSCALARFIELD {
     typedef typename GRID_TYPE::VERTEX_INDEX_TYPE VTYPE;
 
     const DTYPE dimension = grid.Dimension();
-    const double angle_radians = (angle*M_PI)/180.0;
+    const double angle_radians = (angle*std::numbers::pi)/180.0;
     IJK::ARRAY<COORD_TYPE> coord(dimension);
     IJK::ARRAY<double> normalized_axis_dir(dimension);
     double dist0, dist1, dist2, x;
@@ -584,7 +585,7 @@ namespace IJKSCALARFIELD {
     typedef typename GRID_TYPE::VERTEX_INDEX_TYPE VTYPE;
 
     const DTYPE dimension = grid.Dimension();
-    const double angle_radians = (angle*M_PI)/180.0;
+    const double angle_radians = (angle*std::numbers::pi)/180.0;
     const double sin_angle = std::sin(angle_radians);
     IJK::ARRAY<COORD_TYPE> coord(dimension);
     IJK::ARRAY<double> normalized_axis_dir(dimension);

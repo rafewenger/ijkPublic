@@ -1,10 +1,13 @@
-/// \file ijkgradientfield.tpp
-/// Gradient field generation and manipulation routines
-/// Generate scalar and gradient at each grid vertex.
+/*!
+ *  @file ijkgradientfield.tpp
+ *  @brief Gradient field generation and manipulation routines.
+ * - Generate scalar and gradient at each grid vertex.
+ */
+
 
 /*
   IJK: Isosurface Jeneration Kode
-  Copyright (C) 2011-2015 Rephael Wenger
+  Copyright (C) 2011-2024 Rephael Wenger
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public License
@@ -25,6 +28,7 @@
 #define _IJKGRADIENTFIELD_
 
 #include <cmath>
+#include <numbers>
 
 #include "ijk.tpp"
 #include "ijkcoord.tpp"
@@ -1008,7 +1012,7 @@ namespace IJKSCALARFIELD {
     typedef typename SCALAR_GRID_TYPE::VERTEX_INDEX_TYPE VTYPE;
 
     const DTYPE dimension = grid.Dimension();
-    const double angle_radians = (angle*M_PI)/180.0;
+    const double angle_radians = (angle*std::numbers::pi)/180.0;
     IJK::ARRAY<COORD_TYPE> coord(dimension);
     IJK::ARRAY<double> normalized_axis_dir(dimension);
     IJK::ARRAY<double> v0(dimension), v1(dimension);
@@ -1063,7 +1067,7 @@ namespace IJKSCALARFIELD {
     typedef typename SCALAR_GRID_TYPE::VERTEX_INDEX_TYPE VTYPE;
 
     const DTYPE dimension = grid.Dimension();
-    const double angle_radians = (angle*M_PI)/180.0;
+    const double angle_radians = (angle*std::numbers::pi)/180.0;
     IJK::ARRAY<COORD_TYPE> coord(dimension);
     IJK::ARRAY<double> normalized_axis_dir(dimension);
     IJK::ARRAY<double> v0(dimension), v1(dimension);
@@ -1119,7 +1123,7 @@ namespace IJKSCALARFIELD {
     typedef typename SCALAR_GRID_TYPE::VERTEX_INDEX_TYPE VTYPE;
 
     const DTYPE dimension = grid.Dimension();
-    const double angle_radians = (angle*M_PI)/180.0;
+    const double angle_radians = (angle*std::numbers::pi)/180.0;
     IJK::ARRAY<COORD_TYPE> coord(dimension);
     IJK::ARRAY<double> normalized_axis_dir(dimension);
     IJK::ARRAY<double> v0(dimension), v1(dimension);
@@ -1181,7 +1185,7 @@ namespace IJKSCALARFIELD {
     typedef typename SCALAR_GRID_TYPE::VERTEX_INDEX_TYPE VTYPE;
 
     const DTYPE dimension = grid.Dimension();
-    const double angle_radians = (angle*M_PI)/180.0;
+    const double angle_radians = (angle*std::numbers::pi)/180.0;
     const double sin_angle = std::sin(angle_radians);
     IJK::ARRAY<COORD_TYPE> coord(dimension);
     IJK::ARRAY<double> normalized_axis_dir(dimension);

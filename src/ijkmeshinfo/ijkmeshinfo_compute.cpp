@@ -23,9 +23,9 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#define _USE_MATH_DEFINES
 
 #include <cmath>
+#include <numbers>
 
 #include "ijk.tpp"
 #include "ijkcoord.tpp"
@@ -79,8 +79,8 @@ void IJKMESHINFO::compute_min_max_polygon_angles
        compute_min_max_cos_polygon_angles);
   }
 
-  min_angle = std::acos(max_cos) * 180.0/M_PI;
-  max_angle = std::acos(min_cos) * 180.0/M_PI;
+  min_angle = std::acos(max_cos) * 180.0/std::numbers::pi;
+  max_angle = std::acos(min_cos) * 180.0/std::numbers::pi;
 }
 
 
@@ -146,8 +146,8 @@ void IJKMESHINFO::compute_min_max_polygon_angles
      mesh_data.MaxSmallMagnitude(), cos_min, cos_max, num_angle);
 
   if (num_angle > 0) {
-    min_angle = std::acos(cos_min) * 180.0/M_PI;
-    max_angle = std::acos(cos_max) * 180.0/M_PI;
+    min_angle = std::acos(cos_min) * 180.0/std::numbers::pi;
+    max_angle = std::acos(cos_max) * 180.0/std::numbers::pi;
   }
 }
 
@@ -192,9 +192,9 @@ void IJKMESHINFO::compute_num_polygon_angles
 
   // Set cos_angle_le and cos_angle_ge.
   for (int j = 0; j < angle_le.size(); j++) 
-    { cos_angle_le.push_back(cos(angle_le[j]*M_PI/180.0)); }
+    { cos_angle_le.push_back(cos(angle_le[j]*std::numbers::pi/180.0)); }
   for (int j = 0; j < angle_ge.size(); j++) 
-    { cos_angle_ge.push_back(cos(angle_ge[j]*M_PI/180.0)); }
+    { cos_angle_ge.push_back(cos(angle_ge[j]*std::numbers::pi/180.0)); }
 
   /* NOT YET IMPLEMENTED
   if (flag_internal && !are_boundary_facets_identified) {
@@ -254,9 +254,9 @@ void IJKMESHINFO::compute_num_tetmesh_dihedral_angles
 
   // Set cos_angle_le and cos_angle_ge.
   for (int j = 0; j < angle_le.size(); j++) 
-    { cos_angle_le.push_back(cos(angle_le[j]*M_PI/180.0)); }
+    { cos_angle_le.push_back(cos(angle_le[j]*std::numbers::pi/180.0)); }
   for (int j = 0; j < angle_ge.size(); j++) 
-    { cos_angle_ge.push_back(cos(angle_ge[j]*M_PI/180.0)); }
+    { cos_angle_ge.push_back(cos(angle_ge[j]*std::numbers::pi/180.0)); }
 
   /* NOT YET IMPLEMENTED
   if (flag_internal && !are_boundary_facets_identified) {
@@ -352,8 +352,8 @@ void IJKMESHINFO::compute_min_max_tetrahedron_facet_angles
     (dimension, tetrahedron_vert, vertex_coord, cos_min, cos_max, num_angle);
 
   if (num_angle > 0) {
-    min_angle = std::acos(cos_min) * 180.0/M_PI;
-    max_angle = std::acos(cos_max) * 180.0/M_PI;
+    min_angle = std::acos(cos_min) * 180.0/std::numbers::pi;
+    max_angle = std::acos(cos_max) * 180.0/std::numbers::pi;
   }
 }
 
@@ -402,8 +402,8 @@ void IJKMESHINFO::compute_min_max_tetrahedra_facet_angles
     }
   }
 
-  min_angle = std::acos(cos_min) * 180.0/M_PI;
-  max_angle = std::acos(cos_max) * 180.0/M_PI;
+  min_angle = std::acos(cos_min) * 180.0/std::numbers::pi;
+  max_angle = std::acos(cos_max) * 180.0/std::numbers::pi;
 }
 
 
@@ -444,8 +444,8 @@ void IJKMESHINFO::compute_num_tetrahedra_facet_angles
   }
   */
 
-  COORD_TYPE cos_min = cos(min_angle*M_PI/180.0);
-  COORD_TYPE cos_max = cos(max_angle*M_PI/180.0);
+  COORD_TYPE cos_min = cos(min_angle*std::numbers::pi/180.0);
+  COORD_TYPE cos_max = cos(max_angle*std::numbers::pi/180.0);
   for (int ipoly = 0; ipoly < polymesh.NumPoly(); ipoly++) {
 
     if (flag_internal) {
@@ -521,8 +521,8 @@ void IJKMESHINFO::compute_min_max_tetmesh_dihedral_angles
     }
   }
 
-  min_angle = std::acos(cos_min) * 180.0/M_PI;
-  max_angle = std::acos(cos_max) * 180.0/M_PI;
+  min_angle = std::acos(cos_min) * 180.0/std::numbers::pi;
+  max_angle = std::acos(cos_max) * 180.0/std::numbers::pi;
 }
 
 
@@ -557,8 +557,8 @@ void IJKMESHINFO::compute_min_max_tetrahedron_dihedral_angles
     (dimension, poly_vert, vertex_coord, cos_min, cos_max, num_angle);
 
   if (num_angle > 0) {
-    min_angle = std::acos(cos_min) * 180.0/M_PI;
-    max_angle = std::acos(cos_max) * 180.0/M_PI;
+    min_angle = std::acos(cos_min) * 180.0/std::numbers::pi;
+    max_angle = std::acos(cos_max) * 180.0/std::numbers::pi;
   }
 }
 
