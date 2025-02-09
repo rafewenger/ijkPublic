@@ -534,11 +534,20 @@ namespace IJK {
       const;
 
     /*!
-     *  @brief Return facet shared by icube0 and icube1.
+     *  @brief Return index of facet shared by icube0 and icube1.
      *  @pre icube0 and icube1 share some facet.
+     *  - Index is some integer in range [0..(2*dimension-1)]
+     *    representing cube facet.
      */
     template <typename ITYPE>
     NTYPE SharedFacet(const ITYPE icube0, const ITYPE icube1) const;
+
+    /*!
+     *  @brief Return direction orthogonal to facet shared by icube0 and icube1.
+     *  @pre icube0 and icube1 share some facet.
+     */
+    template <typename ITYPE>
+    NTYPE SharedFacetOrthDir(const ITYPE icube0, const ITYPE icube1) const;    
 
     /*!
      *  @brief Return d'th coordinate of vertex \a iv.
@@ -2093,15 +2102,15 @@ namespace IJK {
       const ITYPE cube_diff = icube1 - icube0;
 
       for (DTYPE d = 0; d < dimension; d++) {
-	if (AxisIncrement(d) == cube_diff)
-	  { return (d+dimension); }
+        if (AxisIncrement(d) == cube_diff)
+          { return (d+dimension); }
       }
     }
     else {
       const ITYPE cube_diff = icube0 - icube1;
       for (DTYPE d = 0; d < dimension; d++) {
-	if (AxisIncrement(d) == cube_diff)
-	  { return d; }
+        if (AxisIncrement(d) == cube_diff)
+          { return d; }
       }
     }
 
@@ -2114,6 +2123,41 @@ namespace IJK {
     throw error;
   }
 
+
+  // Return direction orthogonal to facet shared by icube0 and icube1.
+  // @pre icube0 and icube1 share some facet.
+  template <typename DTYPE, typename ATYPE, typename VTYPE, typename NTYPE> 
+  template <typename ITYPE>
+  NTYPE GRID_PLUS<DTYPE,ATYPE,VTYPE,NTYPE>::
+  SharedFacetOrthDir(const ITYPE icube0, const ITYPE icube1) const
+  {
+    const DTYPE dimension = this->Dimension();
+
+    if (icube0 < icube1) {
+      const ITYPE cube_diff = icube1 - icube0;
+
+      for (DTYPE d = 0; d < dimension; d++) {
+        if (AxisIncrement(d) == cube_diff)
+          { return d; }
+      }
+    }
+    else {
+      const ITYPE cube_diff = icube0 - icube1;
+      for (DTYPE d = 0; d < dimension; d++) {
+        if (AxisIncrement(d) == cube_diff)
+          { return d; }
+      }
+    }
+
+    IJK::PROCEDURE_ERROR error("GRID_PLUS::SharedFacet");
+    error.AddMessage
+      ("Programming error. Cubes do not share a facet.");
+    error.AddMessage
+      ("  Cube ", icube0, " does not share a facet with cube ",
+       icube1, ".");
+    throw error;
+  }
+    
 
   // Return d'th coordinate of vertex \a iv.
   template <typename DTYPE, typename ATYPE, typename VTYPE, typename NTYPE>

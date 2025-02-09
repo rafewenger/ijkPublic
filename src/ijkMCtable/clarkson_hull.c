@@ -3,6 +3,7 @@
 /* clarkson_convex_hull: interface routine for simple retrieval 
    of convex hull simplices (and their vertices)
    by R. Wenger, November, 2001 */
+/* Revised based on compiler warnings - Dec, 2024 - R. Wenger */
 
 /*
  * Ken Clarkson wrote this.  Copyright (c) 1995 by AT&T..
@@ -87,7 +88,8 @@ void *visit_triang_gen(simplex *s, visit_func *visit, test_func *test) {
 		pop(t);
 		if (!t || t->visit == vnum) continue;
 		t->visit = vnum;
-		if (v=(*visit)(t,0)) {return v;}
+    v=(*visit)(t,0); /* Revised: RW, 12-06-2024 */
+		if (v) {return v;}
 		for (i=-1,sn = t->neigh-1;i<cdim;i++,sn++)
 			if ((sn->simp->visit != vnum) && sn->simp && test(t,i,0))
 				push(sn->simp);
@@ -318,7 +320,9 @@ void buildhull (simplex *root) {
 		}
 	}
 
-	while (p = get_another_site()) {
+
+  /* Parentheses added: RW, 12-06-2024 */  
+	while ((p = get_another_site())) {
 	  connect(make_facets(search(root)));
 	}
 }
@@ -424,7 +428,9 @@ float b_err_min, b_err_min_sq;
 double logb(double); /* on SGI machines: returns floor of log base 2 */
 
 static short vd;
-static basis_s	tt_basis = {0,1,-1,0,0,0},
+
+/* Revised: RW, 12-06-2024 */
+static basis_s	tt_basis = {0,1,-1,0,0,{0}},
 		*tt_basisp = &tt_basis,
 		*infinity_basis;
 
@@ -507,7 +513,7 @@ double sc(basis_s *v,simplex *s, int k, int j) {
 double lower_terms(basis_s* v) {
 
 	point vp = v->vecs;
-	int i,j,h,hh=0;
+	int i,j,h;
 	int facs[6] = {2,3,5,7,11,13};
 	double out = 1;
 
@@ -516,26 +522,29 @@ DEBTR(0)
 
 	for (j=0;j<6;j++) do {
 		for (i=0; i<2*rdim && facs[j]*floor(vp[i]/facs[j])==vp[i];i++);
-		if (h = (i==2*rdim)) {
-			hh=1;
+    
+    /* Revised: RW, 12-06-2024 */
+    h = (i==2*rdim);
+		if (h) {
 			out *= facs[j];
 			for (i=0;i<2*rdim; i++) vp[i]/=facs[j];
 		}
 	} while (h);
-/*	if (hh) {DEBTR(-10)  print_basis(DFILE, v);} */
 	return out;
 }
 
 double lower_terms_point(point vp) {
 
-	int i,j,h,hh=0;
+	int i,j,h;
 	int facs[6] = {2,3,5,7,11,13};
 	double out = 1;
 
 	for (j=0;j<6;j++) do {
 		for (i=0; i<2*rdim && facs[j]*floor(vp[i]/facs[j])==vp[i];i++);
-		if (h = (i==2*rdim)) {
-			hh=1;
+
+    /* Revised: RW, 12-06-2024 */
+    h = (i==2*rdim);
+		if (h) {
 			out *= facs[j];
 			for (i=0;i<2*rdim; i++) vp[i]/=facs[j];
 		}
@@ -549,9 +558,7 @@ int reduce_inner(basis_s *v, simplex *s, int k) {
 	point	va = VA(v),
 		vb = VB(v);
 	int	i,j;
-	double	dd,
-		ldetbound = 0,
-		Sb = 0;
+	double	dd;
 	double	scale;
 	basis_s	*snibv;
 	neighbor *sni;
@@ -813,7 +820,6 @@ int sees(site p, simplex *s) {
 
 double radsq(simplex *s) {
 
-	Coord z[MAXDIM];
 	point n;
 	neighbor *sn;
 	int i;
@@ -1205,12 +1211,11 @@ Tree * splay (site i, Tree *t)
 /* size fields are maintained */
 {
     Tree N, *l, *r, *y;
-    int comp, root_size, l_size, r_size;
+    int comp, l_size, r_size;
     
     if (!t) return t;
     N.left = N.right = NULL;
     l = r = &N;
-    root_size = node_size(t);
     l_size = r_size = 0;
  
     for (;;) {
@@ -1349,7 +1354,7 @@ void printtree_flat_inner(Tree * t) {
     if (!t) return;
 
     printtree_flat_inner(t->right);
-    printf("%d ", t->key);fflush(stdout);
+    printf("%p ", t->key);fflush(stdout);
     printtree_flat_inner(t->left);
 }
 
@@ -1404,7 +1409,7 @@ void *add_to_fg(simplex *s, void *dum) {
 
 	neighbor t, *si, *sj, *sn = s->neigh;
 	fg *fq;
-	int q,m,Q=1<<cdim, s1;
+	int q,m,Q=1<<cdim;
 					/* sort neigh by site number */
 	for (si=sn+2;si<sn+cdim;si++)
 		for (sj=si; sj>sn+1 && snkey(sj-1) > snkey(sj); sj--)
@@ -1504,12 +1509,9 @@ int p_fg_x_depth;
 void p_fg_x(Tree*t, int depth, int bad) {
 
 	static int fa[MAXDIM];
-	static point fp[MAXDIM];
-	int i,th;
-	point tp;
+	int i;
 
 	fa[depth] = site_num(t->key);
-	fp[depth] = t->key;
 
 	if (depth==p_fg_x_depth) for (i=0;i<=depth;i++)
 			fprintf(FG_OUT, "%d%s", fa[i], (i==depth) ? "\n" : " ");
@@ -1530,7 +1532,6 @@ void print_fg(fg *faces_gr, FILE *F) {FG_OUT=F; visit_fg(faces_gr, p_fg);}
 double fg_hist[100][100], fg_hist_bad[100][100],fg_hist_far[100][100];
 
 void h_fg(Tree *t, int depth, int bad) {
-	int i;
 	if (!t->fgs->facets) return;
 	if (bad) {
 		fg_hist_bad[depth][t->fgs->facets->size]++;
@@ -1648,7 +1649,10 @@ char tmpfilenam[L_tmpnam];
 
 FILE* efopen(char *file, char *mode) {
 	FILE* fp;
-	if (fp = fopen(file, mode)) return fp;
+
+  /* Revised: RW, 12-06-2024 */
+  fp = fopen(file, mode);
+	if (fp) return fp;
 	fprintf(DFILE, "couldn't open file %s mode %s\n",file,mode);
 	exit(1);
 	return NULL;
@@ -1656,7 +1660,10 @@ FILE* efopen(char *file, char *mode) {
 
 FILE* epopen(char *com, char *mode) {
 	FILE* fp;
-	if (fp = popen(com, mode)) return fp;
+
+  /* Revised: RW, 12-06-2024 */
+  fp = popen(com, mode);  
+	if (fp) return fp;
 	fprintf(stderr, "couldn't open stream %s mode %s\n",com,mode);
 	exit(1);
 	return 0;
@@ -1668,7 +1675,7 @@ void print_neighbor_snum(FILE* F, neighbor *n){
 
 	assert(site_num!=NULL);
 	if (n->vert)
-		fprintf(F, "%d ", (*site_num)(n->vert));
+		fprintf(F, "%lu ", (*site_num)(n->vert));
 	else
 		fprintf(F, "NULL vert ");
 	fflush(stdout);
@@ -1766,7 +1773,8 @@ void *check_simplex(simplex *s, void *dum){
 		sns = sn->simp;
 		if (!sns) {
 			fprintf(DFILE, "check_triang; bad simplex\n");
-			print_simplex_f(s, DFILE, &print_neighbor_full); fprintf(DFILE, "site_num(p)=%G\n",site_num(p));
+			print_simplex_f(s, DFILE, &print_neighbor_full);
+      fprintf(DFILE, "site_num(p)=%lu\n",site_num(p));
 			return s;
 		}
 		if (!s->peak.vert && sns->peak.vert && i!=-1) {
@@ -1822,12 +1830,13 @@ void vlist_out(point *v, int vdim, FILE *Fin, int amble) {
 
 	if (Fin) {F=Fin; if (!v) return;}
 
-	for (j=0;j<vdim;j++) fprintf(F, "%d ", (site_num)(v[j]));
+	for (j=0;j<vdim;j++) fprintf(F, "%lu ", (site_num)(v[j]));
 	fprintf(F,"\n");
 
 	return;
 }
 
+/* Generates compiler warnings and not used.
 void off_out(point *v, int vdim, FILE *Fin, int amble) {
 
 	static FILE *F, *G;
@@ -1843,10 +1852,10 @@ void off_out(point *v, int vdim, FILE *Fin, int amble) {
 	if (amble==0) {
 		for (i=0;i<vdim;i++) if (v[i]==infinity) return;
 		fprintf(OFFFILE, "%d ", vdim);
-		for (j=0;j<vdim;j++) fprintf(OFFFILE, "%d ", (site_num)(v[j]));
+		for (j=0;j<vdim;j++) fprintf(OFFFILE, "%lu ", (site_num)(v[j]));
 		fprintf(OFFFILE,"\n");
 	} else if (amble==-1) {
-		OFFFILE = efopen(tmpnam(offfilenam), "w");
+    OFFFILE = efopen(tmpnam(offfilenam), "w");
 	} else {
 		fclose(OFFFILE);
 
@@ -1878,6 +1887,7 @@ void off_out(point *v, int vdim, FILE *Fin, int amble) {
 	}
 
 }
+*/
 
 
 

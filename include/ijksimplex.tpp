@@ -7,7 +7,7 @@
 
 /*
   IJK: Isosurface Jeneration Kode
-  Copyright (C) 2023 Rephael Wenger
+  Copyright (C) 2023-2024 Rephael Wenger
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public License
@@ -166,7 +166,7 @@ namespace IJK {
   {
     const int ONE(1);
     std::vector<bool> flag_match(num_vert_per_simplex, false);
-    int num_match = 0;
+    NTYPE num_match = 0;
 
     // Initialize.
     jloc = 0;
@@ -644,7 +644,6 @@ namespace IJK {
    const NTYPES num_simplices, const ITYPE istart,
    NTYPEO & num_oriented)
   {
-    const int TWO(2);
     std::vector<bool> is_oriented(num_simplices, false);
 
     orient_simplices
@@ -1296,7 +1295,7 @@ namespace IJK {
    NTYPEC & num_components)
   {
     IJK::PROCEDURE_ERROR
-      error("get_connected_components_in_simplicial_complex");
+      error("get_facet_connected_components_in_simplicial_complex");
     
     // Initialize;
     num_components = 0;

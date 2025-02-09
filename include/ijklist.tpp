@@ -1,13 +1,13 @@
 /*!
  *  @file ijklist.tpp
  *  @brief ijk templates for handling lists.
- *  - Version 0.4.0
+ *  - Version 0.4.1
  */
 
 
 /*
   IJK: Isosurface Jeneration Kode
-  Copyright (C) 2010-2023 Rephael Wenger
+  Copyright (C) 2010-2025 Rephael Wenger
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public License
@@ -404,7 +404,7 @@ namespace IJK {
   void add_to_list_store_overflow
   (const ITYPE ilist, const ETYPE0 element, ETYPE1 * const list,
    NTYPE0 & num_elements_in_list, const NTYPE1 max_num_elements_in_list, 
-   std::vector<std::pair<ITYPE,ETYPE0>> & overflow_list)
+   std::vector<std::pair<ITYPE,ETYPE0> > & overflow_list)
   {
     if (num_elements_in_list < max_num_elements_in_list) {
       list[num_elements_in_list] = element;
@@ -997,7 +997,7 @@ namespace IJK {
   void LIST_OF_LISTS<ETYPE,NTYPE>::
   ReplaceElements(const ETYPE2 * replacement)
   {
-    for (NTYPE ilist = 0; ilist < NumLists(); ilist++) {
+    for (SIZE_TYPE ilist = 0; ilist < NumLists(); ilist++) {
       for (NTYPE j = 0; j < ListLength(ilist); j++) {
         const NTYPE k = ElementIndex(ilist, j);
         const ETYPE2 x = element[k];
@@ -1037,7 +1037,7 @@ namespace IJK {
 
     sorted_list.resize(NumLists());
 
-    for (int i = 0; i < NumLists(); i++)
+    for (SIZE_TYPE i = 0; i < NumLists(); i++)
       { sorted_list[i] = i; }
 
     std::sort(sorted_list.begin(), sorted_list.end(), list_lt);

@@ -1,12 +1,12 @@
 /*!
  *  @file ijkmeshdiff.cpp
  *  @brief Report differences between two meshes.
- *  - Version 0.4.0
+ *  - Version 0.4.1
  */
 
 /*
   IJK: Isosurface Jeneration Code
-  Copyright (C) 2008-2024 Rephael Wenger
+  Copyright (C) 2008-2025 Rephael Wenger
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public License
@@ -315,7 +315,6 @@ bool out_polymesh_diff
  int & num_poly_diff)
 {
   const int num_poly0 = polymesh0.NumPoly();
-  const int num_poly1 = polymesh1.NumPoly();
 
   num_poly_diff = 0;
 
@@ -366,7 +365,6 @@ bool out_sorted_polymesh_diff
  int & num_poly_diff)
 {
   const int num_poly0 = polymesh0.NumPoly();
-  const int num_poly1 = polymesh1.NumPoly();
 
   num_poly_diff = 0;
 

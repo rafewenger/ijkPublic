@@ -44,7 +44,7 @@ namespace IJK {
   template <typename DTYPE, typename FTYPE>
   inline FTYPE cube_facet_orth_dir(const DTYPE dimension, const FTYPE kf)
   {
-    return(kf%dimension);
+    return (kf%dimension);
   }
 
 
@@ -56,7 +56,7 @@ namespace IJK {
   template <typename DTYPE, typename FTYPE>
   inline FTYPE cube_facet_side(const DTYPE dimension, const FTYPE kf)
   {
-    return(kf/dimension);
+    return (kf/dimension);
   }
   
   /// Return true if facet jf contains vertex i.
@@ -69,7 +69,7 @@ namespace IJK {
     FTYPE mask = (FTYPE(1) << orth_dir);
 
     bool flag_contains = ((side << orth_dir) == (mask & iv));
-    return(flag_contains);
+    return flag_contains;
   }
 
 
@@ -87,6 +87,7 @@ namespace IJK {
     NTYPE num_edges;           ///< Number of cube edges.
     NTYPE num_facets;          ///< Number of cube facets.
     NTYPE num_facet_vertices;  ///< Number of cube facet vertices.
+    NTYPE num_facet_edges;     ///< Number of cube facet edges.
     NTYPE num_ridge_vertices;  ///< Number of cube ridge vertices.
 
     void Init                  /// Initialize cube.
@@ -110,38 +111,40 @@ namespace IJK {
     (const DTYPE2 dimension);
 
     // get functions
-    DTYPE Dimension() const               /// Dimension.
-    { return(dimension); }
+    int Dimension() const                 /// Dimension.
+    { return dimension; }
     NTYPE NumVertices() const             /// Number of cube vertices. 
-    { return(num_vertices); }
+    { return num_vertices; }
     NTYPE NumEdges() const                /// Number of cube edges.
-    { return(num_edges); }
+    { return num_edges; }
     NTYPE NumFacets() const               /// Number of cube facets. 
-    { return(num_facets); }
+    { return num_facets; }
     NTYPE NumFacetVertices() const        /// Number of cube facet vertices. 
-    { return(num_facet_vertices); }
+    { return num_facet_vertices; }
+    NTYPE NumFacetEdges() const           /// Number of cube facet edges. 
+    { return num_facet_edges; }
     NTYPE NumRidgeVertices() const        /// Number of cube ridge vertices. 
-    { return(num_ridge_vertices); }
+    { return num_ridge_vertices; }
     NTYPE NumDiagonals() const            /// Number of cube diagonals.
-    { return(NumFacetVertices()); }
+    { return NumFacetVertices(); }
 
     /// Number of edges incident on a vertex.
     NTYPE NumIncidentEdges() const
-    { return(Dimension()); }
+    { return Dimension(); }
 
     /// Maximum cube vertex index. Undefined if dimension < 1.
     NTYPE MaxVertexIndex() const
-    { return(NumVertices()-1); }
+    { return (NumVertices()-1); }
 
     /// Index of vertex diagonally opposite iv in cube.
     NTYPE OppositeVertex
     (const NTYPE iv) const
-    { return(MaxVertexIndex()-iv); }
+    { return (MaxVertexIndex()-iv); }
 
     /// Index of facet parallel to ifacet.
     NTYPE OppositeFacet
     (const NTYPE ifacet) const
-    { return((ifacet+Dimension())%NumFacets()); }
+    { return ((ifacet+Dimension())%NumFacets()); }
 
     /*!
      *  @brief Return neighbor of vertex \a iv0.
@@ -152,15 +155,19 @@ namespace IJK {
     (const NTYPE iv0, const DTYPE dir) const
     {
       int mask = (1L << dir);
-      return((iv0^mask));
+      return ((iv0^mask));
     };
 
+    /// @brief Return direction orthogonal to facet.
+    int FacetOrthDir(const int ifacet) const
+    { return (ifacet%Dimension()); }
+    
     /*!
      *  @brief Return side containing facet.
      *  - Return 0 if facet contains vertex 0.
      *  - Return 1 if facet does not contain vertex 0.
      */
-    NTYPE FacetSide(const NTYPE ifacet) const
+    int FacetSide(const int ifacet) const
     { return cube_facet_side(Dimension(), ifacet); }
 
   };
@@ -175,6 +182,7 @@ namespace IJK {
 
   protected:
     VTYPE * facet_vertex;                 ///< Facet vertices.
+    VTYPE * facet_edge;                   ///< Facet edges.
     VTYPE * edge_endpoint;                ///< Edge endoints.
 
 
@@ -195,6 +203,20 @@ namespace IJK {
     /// Set facet vertices.
     void SetFacetVertices();
 
+    /*!
+     *  @brief Set facet edges.
+     *  - for each facet f do:
+     *    -# for each direction d that is not orthogonal to f do:
+     *      -# f' = lower facet orthogonal to d.
+     *      -# for each vertex v of f' do:
+     *      -# if v is in f, then
+     *        -# ie = edge incident on v in direction d.
+     *        -# Add ie to list of edge in facet f.
+     *  @pre Arrays facet_vertex[] and incident_edge[] should be set 
+     *    before facet_edge[].
+     */
+    void SetFacetEdges();
+    
     /// @brief Set edge endoints.
     /// @pre Array facet_vertex[] should be set before edge_endpoint[].
     void SetEdgeEndpoints();
@@ -228,44 +250,58 @@ namespace IJK {
     VTYPE EdgeEndpoint(const VTYPE ie, const NTYPE iend) const
     { return(edge_endpoint[2*ie+iend]); };
 
-    /// Return pointer to facet vertices
+    /// @brief Return pointer to facet vertices.
     const VTYPE * FacetVertex() const
-    { return(facet_vertex); }
+    { return facet_vertex; }
 
     /*!
-     *  @brief Return facet vertex.
+     *  @brief Return k'th facet vertex.
      *  @param ifacet Facet index. 
      *    - Facet is orthogonal to axis (ifacet\%dimension).
      *    - If ifacet < dimension, facet contains vertex 0.
      *    - If ifacet >= dimension, facet contains largest vertex.
      */
     VTYPE FacetVertex(const NTYPE ifacet, const NTYPE k) const
-    { return(facet_vertex[ifacet*this->NumFacetVertices()+k]); };
+    { return facet_vertex[ifacet*this->NumFacetVertices()+k]; };
+
+    /// @brief Return pointer to facet edges.
+    const VTYPE * FacetEdge() const
+    { return facet_edge; }
+
+    /*!
+     *  @brief Return k'th facet vertex.
+     *  @param ifacet Facet index. 
+     *    - Facet is orthogonal to axis (ifacet\%dimension).
+     *    - If ifacet < dimension, facet contains vertex 0.
+     *    - If ifacet >= dimension, facet contains largest vertex.
+     */
+    VTYPE FacetEdge(const NTYPE ifacet, const NTYPE k) const
+    { return facet_edge[ifacet*this->NumFacetEdges()+k]; };
 
     /// Index of vertex diagonally opposite vertex k in facet.
     NTYPE OppositeFacetVertex
     (const NTYPE ifacet, const NTYPE k) const
-    { return(this->NumFacetVertices()-k-1); }
+    { return (this->NumFacetVertices()-k-1); }
 
     /// Return pointer to array of incident edges.
     const VTYPE * IncidentEdge() const
-    { return(incident_edge); }
+    { return incident_edge; }
 
     /// Return incident edge with edge direction d.
     VTYPE IncidentEdge(const VTYPE iv, const NTYPE d) const
-    { return(incident_edge[iv*this->NumIncidentEdges()+d]); };
+    { return incident_edge[iv*this->NumIncidentEdges()+d]; };
 
     /// Return direction orthogonal to facet ifacet.
-    const DTYPE FacetOrthDir(const VTYPE ifacet) const
-    { return(ifacet%this->Dimension()); }
+    const int FacetOrthDir(const VTYPE ifacet) const
+    { return (ifacet%this->Dimension()); }
 
     /// Return direction of edge ie.
-    const DTYPE EdgeDir(const VTYPE ie) const
-    { return(int(ie)/int(this->NumFacetVertices())); }
+    const int EdgeDir(const VTYPE ie) const
+    { return (int(ie)/int(this->NumFacetVertices())); }
 
     /// Return index of facet containing vertex facet_vertex_index.
     VTYPE FacetIndex(const VTYPE facet_vertex_index) const
-    { return(int(facet_vertex_index)/int(this->NumFacetVertices())); }
+    { return (int(facet_vertex_index)/int(this->NumFacetVertices())); }
 
     /*!
      *  @brief Return index of edge "opposite" to ieA in direction dir.
@@ -274,7 +310,7 @@ namespace IJK {
      *    containing ieA with orthogonal direction dir.
      *  @pre Direction of edge ieA does not equal dir.
      */
-    DTYPE OppositeEdge(const VTYPE ieA, const DTYPE dir) const;
+    int OppositeEdge(const VTYPE ieA, const DTYPE dir) const;
 
     /// Return true if edge is incident on vertex.
     bool IsEdgeIncidentOnVertex(const VTYPE ie, const VTYPE iv) const;
@@ -1185,6 +1221,7 @@ namespace IJK {
     num_edges = 0;
     num_facets = 0;
     num_facet_vertices = 0;
+    num_facet_edges = 0;
     num_ridge_vertices = 0;
   }
 
@@ -1206,6 +1243,13 @@ namespace IJK {
     this->num_edges = compute_num_cube_edges(dimension);
     this->num_facet_vertices = num_vertices/2;
     this->num_ridge_vertices = num_facet_vertices/2;
+
+    if (dimension > 0) {
+      this->num_facet_edges =
+        (this->num_edges - this->num_facet_vertices)/2;
+    }
+    else
+      { this->num_facet_edges = 0; }
   }
 
   // **************************************************
@@ -1232,6 +1276,7 @@ namespace IJK {
   void CUBE_FACE_INFO<DTYPE,NTYPE,VTYPE>::Init()
   {
     facet_vertex = NULL;
+    facet_edge = NULL;
     edge_endpoint = NULL;
     incident_edge = NULL;
   }
@@ -1241,6 +1286,7 @@ namespace IJK {
   void CUBE_FACE_INFO<DTYPE,NTYPE,VTYPE>::Init(const int dimension)
   {
     facet_vertex = NULL;
+    facet_edge = NULL;
     edge_endpoint = NULL;
     incident_edge = NULL;
 
@@ -1255,6 +1301,11 @@ namespace IJK {
       delete [] facet_vertex;
       facet_vertex = NULL;
     }
+
+    if (facet_edge != NULL) {
+      delete [] facet_edge;
+      facet_edge = NULL;
+    }    
 
     if (edge_endpoint != NULL) {
       delete [] edge_endpoint;
@@ -1277,6 +1328,7 @@ namespace IJK {
     FreeAll();
     CUBE_INFO<DTYPE,NTYPE>::SetDimension(dimension);
     facet_vertex = new VTYPE[this->NumFacetVertices()*this->NumFacets()];
+    facet_edge = new VTYPE[this->NumFacetEdges()*this->NumFacets()];
     edge_endpoint = new VTYPE[this->NumEdges()*2];
     incident_edge = new VTYPE[this->NumVertices()*this->NumIncidentEdges()];
 
@@ -1288,10 +1340,19 @@ namespace IJK {
   void CUBE_FACE_INFO<DTYPE,NTYPE,VTYPE>::SetFaces()
   {    
     SetFacetVertices();
+
+    // Must call SetFacetVertices() before SetEdgeEndpoints().
     SetEdgeEndpoints();
+
+    // Must call SetEdgeEndpoints() before SetFacetVertices().
     SetIncidentEdges();
+
+    // Must call SetFacetVertices() and SetIncidentEdges()
+    //   before SetFacetEdges().
+    SetFacetEdges();
   }
 
+  
   // Set facet vertices.
   template <typename DTYPE, typename NTYPE, typename VTYPE> 
   void CUBE_FACE_INFO<DTYPE,NTYPE,VTYPE>::SetFacetVertices()
@@ -1310,11 +1371,14 @@ namespace IJK {
 
     for (NTYPE ifacet = 0; ifacet < this->NumFacets(); ifacet++) {
 
+      /* OBSOLETE
       DTYPE orth_dir = ifacet%dimension;
+      */
+      const int orth_dir = FacetOrthDir(ifacet);
 
       // Multiply by s mod (num_cube_vertices-1) to compute vertex index.
       NTYPE s = 2;
-      for (DTYPE d = 0; d < orth_dir; d++)
+      for (int d = 0; d < orth_dir; d++)
         { s = s*2; };
       s = s%(num_cube_vertices-1);
 
@@ -1348,6 +1412,62 @@ namespace IJK {
 
   }
 
+
+  // Set facet edges
+  template <typename DTYPE, typename NTYPE, typename VTYPE> 
+  void CUBE_FACE_INFO<DTYPE,NTYPE,VTYPE>::SetFacetEdges()
+  {
+    const DTYPE dimension = this->Dimension();
+    const NTYPE num_facet_vertices = this->NumFacetVertices();
+    const NTYPE num_facet_edges = this->NumFacetEdges();
+    IJK::PROCEDURE_ERROR error("SetFacetEdges");
+
+    if (dimension < 1) { return; };
+
+    if (facet_edge == NULL) {
+      error.AddMessage("Programming error.  Array facet_edge[] not allocated.");
+      throw error;
+    }
+
+    for (NTYPE ifacet0 = 0; ifacet0 < this->NumFacets(); ifacet0++) {
+
+      const int orth_dir = FacetOrthDir(ifacet0);
+
+      int ikount = 0;
+      VTYPE * facet0_edge = facet_edge + this->NumFacetEdges()*ifacet0;
+      for (int edge_dir = 0; edge_dir < this->Dimension(); edge_dir++) {
+
+        if (edge_dir == orth_dir) {
+          // Edge with direction edge_dir is not in facet.
+          continue;
+        }
+
+        // ifacet1 is lower facet orthogonal to edge_dir.
+        const int ifacet1 = edge_dir;
+        for (int j = 0; j < num_facet_vertices; j++) {
+          const VTYPE jv = FacetVertex(ifacet1, j);
+          if (this->IsFacetIncidentOnVertex(ifacet0, jv)) {
+            const VTYPE iedge = IncidentEdge(jv, edge_dir);
+            facet0_edge[ikount] = iedge;
+            ikount++;
+          }
+        }
+      }
+
+      if (ikount != num_facet_edges) {
+        error.AddMessage
+          ("Programming error in determining edges for facet ",
+           ifacet0, ".");
+        error.AddMessage("  Dimension: ", dimension);
+        error.AddMessage("  Added ", ikount, " edges.");
+        error.AddMessage
+          ("  Expected ", this->NumFacetEdges(), " edges.");
+        throw error;
+      }
+    }
+  }
+
+      
   // Set edge endpoints.
   // @pre Array facet_vertex[] should be set before edge_endpoints[].
   template <typename DTYPE, typename NTYPE, typename VTYPE> 
@@ -1403,9 +1523,10 @@ namespace IJK {
     }
   }
 
+  
   // Return index of edge "opposite" to ieA in direction dir.
   template <typename DTYPE, typename NTYPE, typename VTYPE> 
-  DTYPE CUBE_FACE_INFO<DTYPE,NTYPE,VTYPE>::
+  int CUBE_FACE_INFO<DTYPE,NTYPE,VTYPE>::
   OppositeEdge (const VTYPE ieA, const DTYPE dir) const
   {
     const DTYPE edge_dir = EdgeDir(ieA);

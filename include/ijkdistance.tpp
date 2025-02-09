@@ -27,8 +27,6 @@
 #ifndef _IJKDISTANCE_
 #define _IJKDISTANCE_
 
-#define _USE_MATH_DEFINES
-
 #include <algorithm>
 #include <cmath>
 #include <limits>

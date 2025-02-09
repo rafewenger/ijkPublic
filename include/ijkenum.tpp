@@ -110,7 +110,7 @@ namespace IJK {
     static std::string ToLower(const std::string & s)
     {
       std::string s2 = s;
-      for (int i = 0; i < s2. size(); i++)
+      for (std::string::size_type i = 0; i < s2. size(); i++)
         { s2[i] = std::tolower(s2[i]); }
       return s2;
     };
@@ -128,11 +128,13 @@ namespace IJK {
    const ENUM_STR<ENUM_TYPE> enum_str_pair[],
    const int num_pairs)
   {
+    typedef std::string::size_type SIZE_TYPE;
+    
     IJK::PROCEDURE_ERROR error("ENUM_LIST::Init().");
 
     for (int i = 0; i < num_pairs; i++) {
       const ENUM_TYPE enum_value  = enum_str_pair[i].value;
-      const int ivalue = int(enum_value);
+      const SIZE_TYPE ivalue = SIZE_TYPE(enum_value);
 
       // Resize C++ vector, so that str[undefined] is allocated.
       str.resize(int(undefined)+1);

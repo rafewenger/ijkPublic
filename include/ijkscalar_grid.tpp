@@ -1,13 +1,13 @@
 /*!
  *  @file ijkscalar_grid.tpp
  *  @brief ijk templates defining scalar grid classes and functions.
- *  - Version 0.4.0
+ *  - Version 0.4.1
  */
 
 
 /*
   IJK: Isosurface Jeneration Kode
-  Copyright (C) 2008-2023 Rephael Wenger
+  Copyright (C) 2008-2025 Rephael Wenger
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public License
@@ -233,7 +233,7 @@ namespace IJK {
 
     /// Non-uniformly subsample \a scalar_grid2. Resizes current grid.
     template <typename GTYPE, typename PTYPE>
-    void Subsample
+    void SubsampleNonUniform
     (const GTYPE & scalar_grid2, const PTYPE subsample_period[]);
 
     /// Supersample \a scalar_grid2.  Resizes current grid.
@@ -243,7 +243,7 @@ namespace IJK {
 
     /// Non-uniformly supersample \a scalar_grid2.  Resizes current grid.
     template <typename GTYPE, typename PTYPE>
-    void Supersample
+    void SupersampleNonUniform
     (const GTYPE & scalar_grid2, const PTYPE supersample_period[]);
 
   };
@@ -1387,14 +1387,14 @@ namespace IJK {
   ///          along axis d.
   template <typename BASE_CLASS>
   template <typename GCLASS, typename PTYPE>
-  void SCALAR_GRID_ALLOC<BASE_CLASS>::Subsample
+  void SCALAR_GRID_ALLOC<BASE_CLASS>::SubsampleNonUniform
   (const GCLASS & scalar_grid, const PTYPE subsample_period[])
   {
     const DTYPE dimension = scalar_grid.Dimension();
     IJK::ARRAY<VTYPE> axis_increment(dimension);
     IJK::ARRAY<VTYPE> vprimary(dimension);
     IJK::ARRAY<ATYPE> subsampled_axis_size(dimension);
-    IJK::PROCEDURE_ERROR error("SCALAR_GRID::Subsample");
+    IJK::PROCEDURE_ERROR error("SCALAR_GRID::SubsampleNonUniform");
 
     for (DTYPE d = 0; d < dimension; d++) {
       subsampled_axis_size[d] =
@@ -1418,7 +1418,7 @@ namespace IJK {
 
       DTYPE d = 0;
       while (d+1 < dimension &&
-             (vprimary[d] + (subsample_period[d])*axis_increment[d] >=
+             (vprimary[d] + (subsample_period[d])*(axis_increment[d]) >=
               vprimary[d+1] + axis_increment[d+1])) {
         d++;
       }
@@ -1449,7 +1449,7 @@ namespace IJK {
     const DTYPE dimension = scalar_grid.Dimension();
     IJK::ARRAY<PTYPE> period(dimension, subsample_period);
 
-    this->Subsample(scalar_grid, period.PtrConst());
+    this->SubsampleNonUniform(scalar_grid, period.PtrConst());
   }
 
 
@@ -1477,7 +1477,7 @@ namespace IJK {
 
   template <typename BASE_CLASS>
   template <typename GTYPE, typename PTYPE>
-  void SCALAR_GRID_ALLOC<BASE_CLASS>::Supersample
+  void SCALAR_GRID_ALLOC<BASE_CLASS>::SupersampleNonUniform
   (const GTYPE & scalar_grid2, const PTYPE supersample_period[])
   {
     const DTYPE dimension = scalar_grid2.Dimension();
